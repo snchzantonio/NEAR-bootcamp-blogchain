@@ -1,0 +1,28 @@
+#contract ignore
+/contract/build/
+/contract/out/
+/contract/neardev/
+
+#node modules
+**/node_modules
+**/package-lock.json
+**/yarn.lock
+
+#env
+
+**/.env
+
+.DS_Store
+
+*.log
+**/target/
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+workspace.code-workspace
