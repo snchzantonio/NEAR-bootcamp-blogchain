@@ -1,9 +1,9 @@
 # Frontend
 
-Este es un Mockup de como se veria el Frontend de nuestro contrato.
+Este es un MockUP de como se veria el Frontend de nuestro contrato.
 
 ## Requisitos 
-Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado 
+Necesitas tener [Node.js](https://nodejs.org/) v10+ instalado 
 
 ## Pasos
 Primero instalar las dependencias 
@@ -15,4 +15,4 @@ Desplegar servidor de desarrollo
 ```sh 
 npm run start
 ```
-Abrir el navegador e ir a  [Puerto local](http://localhost:8080/) 
+Abrir el navegador e ir a [Puerto local](http://localhost:8080/) (si no funciona revisar en consola el puerto del servidor)
