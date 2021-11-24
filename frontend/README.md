@@ -3,7 +3,7 @@
 Este es un Mockup de como se veria el Frontend de nuestro contrato.
 
 ## Requisitos 
-Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado 
+Necesitas tener [Node.js](https://nodejs.org/) v14+ instalado 
 
 ## Pasos
 Primero instalar las dependencias 
