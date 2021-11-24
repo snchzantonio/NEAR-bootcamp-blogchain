@@ -1,6 +1,6 @@
 # Frontend
 
-Este es un MockUP de como se veria el Frontend de nuestro contrato.
+Este es un Mockup de como se veria el Frontend de nuestro contrato.
 
 ## Requisitos 
 Necesitas tener [Node.js](https://nodejs.org/) v10+ instalado 
