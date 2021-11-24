@@ -48,4 +48,4 @@ export class Blog {
 */
 
 export const users = new PersistentUnorderedMap<string, User>("users");
-export const blogs = new PersistentUnorderedMap<string, Blog>("blogs");
+export const blogs = new PersistentUnorderedMap<number, Blog>("blogs");
