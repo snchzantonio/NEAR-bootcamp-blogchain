@@ -92,7 +92,7 @@ export function getPostsByUser(username: string): Array<Post>{
     return postsArray;
   }
   assert(false, "No se encontro usuario");
-  return null;
+  return [];
 }
 
 export function getPostById(postId: u32): Post | null {
