@@ -22,7 +22,7 @@ export function publishPost(title: string, body: string): void {
   if (users.contains(sender)) {
     user = users.getSome(sender);
   } else {
-    logging.log(`Creando nuevo usuario: ${sender}`);
+    logging.log("Creando nuevo usuario: " + sender); // aqui no existen string template
     user = new User(sender);
     users.set(sender, user);
   }
@@ -70,7 +70,12 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
 }
 
 export function hidePost(at: u32 = 0): void {
-  const post = posts.getSome(at);
-  post.hidden = true;
-
+  let post = posts.get(at);
+  if(post) {
+    post.hidden = true;
+    posts.set(at, post);
+    logging.log(posts.getSome(at))
+    return;
+  }
+  assert(false, at.toString() + " id no existe")
 }
