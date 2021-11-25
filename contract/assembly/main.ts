@@ -80,7 +80,7 @@ export function hidePost(at: u32 = 0): void {
 
 }
 
-export function getPostsByUser(username: string): Array<Post> | null{
+export function getPostsByUser(username: string): Array<Post>{
   const user = users.get(username);
   let postsArray = new Array<Post>();
   if(user) {
@@ -92,5 +92,5 @@ export function getPostsByUser(username: string): Array<Post> | null{
     return postsArray;
   }
   assert(false, "No se encontro usuario");
-  return null;
+  return [];
 }
