@@ -81,3 +81,18 @@ export function hidePost(at: u32 = 0): void {
   assert(false, at.toString() + " id no existe")
 
 }
+
+export function getPostsByUser(username: string): Array<Post> | null{
+  const user = users.get(username);
+  let postsArray = new Array<Post>();
+  if(user) {
+    // const post = posts.getSome(user.id);
+    for (let i = 0; i < user.posts.length; i++) {
+      postsArray.push(posts.getSome(user.posts[i]));
+    }
+
+    return postsArray;
+  }
+  assert(false, "No se encontro usuario");
+  return null;
+}//  users.set(sender, user); // sobre escribir la informacion, es feo pero no se puede
