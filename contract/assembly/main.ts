@@ -84,7 +84,6 @@ export function getPostsByUser(username: string): Array<Post>{
   const user = users.get(username);
   let postsArray = new Array<Post>();
   if(user) {
-    const post = posts.getSome(user.id);
     for (let i = 0; i < user.posts.length; i++) {
       postsArray.push(posts.getSome(user.posts[i]));
     }
