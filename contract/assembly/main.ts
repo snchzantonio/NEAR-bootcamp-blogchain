@@ -48,7 +48,7 @@ export function publishBlog(title: string, body: string): void {
 
 export function getBlogs(amount: u32, at: u32 = 0): Array<Blog> {
   var blogsArray = new Array<Blog>();
-  const blogslength = getNunOfBlogs(); // obtener la cantidad de blogs publicados
+  const blogslength = getNumOfBlogs(); // obtener la cantidad de blogs publicados
 
   if(amount > blogslength || at > blogslength || (at + amount) > blogslength ) {
     assert(false, "La cantidad requerida supera a la existente")
@@ -76,6 +76,6 @@ export function getBlogs(amount: u32, at: u32 = 0): Array<Blog> {
   return blogsArray;
 }
 
-export function getNunOfBlogs(): u32 {
+export function getNumOfBlogs(): u32 {
   return storage.getPrimitive<u32>("blogsIdGenerator", 0);
 }
