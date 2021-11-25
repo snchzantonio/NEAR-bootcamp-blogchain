@@ -1,4 +1,4 @@
-import { context, logging, storage } from "near-sdk-as";
+import { Context, context, logging, storage } from "near-sdk-as";
 import { Post, User, posts, users } from "./models"
 
 export function clean(): void {
@@ -30,7 +30,7 @@ export function publishPost(title: string, body: string): void {
   const newPost = new Post(title, body, user.id);
   posts.set(newPost.id, newPost);
   user.posts.push(newPost.id);
-
+  users.set(sender, user); // sobre escribir la informacion, es feo pero no se puede
 }
 
 
@@ -45,7 +45,7 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
   var postsArray = new Array<Post>();
   const postslength = storage.getPrimitive<u32>("postsIdGenerator", 0); // obtener la cantidad de posts publicados
 
-  if (amount > postslength || at > postslength || (at + amount) > postslength) {
+  if (amount > postslength || at > postslength || (at + amount) > postslength +1) {
     assert(false, "La cantidad requerida supera a la existente")
     return [];
   }
@@ -55,7 +55,6 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
   }
 
   for (let current: u32 = at === 0 ? 1 : at; amount > 0; amount--) {
-    logging.log("Itero por " + current.toString())
     const post = posts.get(current);
     current++;
     if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
@@ -75,9 +74,31 @@ export function hidePost(at: u32 = 0): void {
   if(post) {
     post.hidden = true;
     posts.set(at, post);
-    logging.log(posts.getSome(at))
     return;
   }
   assert(false, at.toString() + " id no existe")
 
+}
+
+export function getPostsByUser(username: string): Array<Post>{
+  const user = users.get(username);
+  let postsArray = new Array<Post>();
+  if(user) {
+    for (let i = 0; i < user.posts.length; i++) {
+      postsArray.push(posts.getSome(user.posts[i]));
+    }
+
+    return postsArray;
+  }
+  assert(false, "No se encontro usuario");
+  return [];
+}
+
+export function getPostById(postId: u32): Post | null {
+  const post = posts.get(postId);
+  if(post) {
+    return (!post.hidden) ? post : null;
+  }
+
+  return null;
 }
