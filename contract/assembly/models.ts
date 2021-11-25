@@ -8,7 +8,7 @@ export class User {
 
   constructor(username: string) {
     //por que los usuarios deben generar su propio id?, esto esta mas alla de la responsabilidad de un usuario
-    const userId = storage.getPrimitive<u32>("userIdGenerator", 0) + 1;
+    const userId = storage.getPrimitive<u32>("userIdGenerator", -1) + 1;
     storage.set<u32>("userIdGenerator", userId);
 
     this.username = username;
@@ -34,7 +34,7 @@ export class Post {
 
   constructor(title: string, body: string, authorId: u32/*, date: string*/) {
     //por que los posts deben generar su propio id?, esto esta mas alla de la responsabilidad de un post
-    const postId = storage.getPrimitive<u32>("postsIdGenerator", 0) + 1;
+    const postId = storage.getPrimitive<u32>("postsIdGenerator", -1) + 1;
     storage.set<u32>("postsIdGenerator", postId);
 
     this.title = title;
