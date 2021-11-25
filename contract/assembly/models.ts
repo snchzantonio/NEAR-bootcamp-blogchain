@@ -1,10 +1,10 @@
-import { PersistentVector, PersistentSet, PersistentUnorderedMap, storage } from "near-sdk-as";
+import { PersistentVector, PersistentSet, PersistentUnorderedMap, storage, logging } from "near-sdk-as";
 
 @nearBindgen
 export class User {
   username: string; // la cuenta de near
   id: u32;
-  posts: PersistentVector<u32>; /* Los id de los posts */
+  posts: Array<u32>; /* Los id de los posts */
 
   constructor(username: string) {
     //por que los usuarios deben generar su propio id?, esto esta mas alla de la responsabilidad de un usuario
@@ -13,7 +13,7 @@ export class User {
 
     this.username = username;
     this.id = userId;
-    this.posts = new PersistentVector<u32>(this.username + "_postsIDs");
+    this.posts = new Array<u32>();//this.username + "_postsIDs"
   }
 }
 
