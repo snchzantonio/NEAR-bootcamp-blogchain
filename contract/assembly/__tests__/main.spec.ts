@@ -1,47 +1,43 @@
 import {
-    getCounter,
-    resetCounter,
-    incrementCounter,
-    decrementCounter
+  publishBlog,
+  getBlogs
 } from '../main';
 
-import { context, storage, VM } from 'near-sdk-as';
+import { context, logging, storage, VM } from 'near-sdk-as';
 
-describe("Counter ", () => {
-    it("should increment by one", () => {
-        incrementCounter(1);
-        expect(getCounter()).toBe(1, "counter should be one after a single increment.");
-    });
+describe("BlogChain ", () => {
+  it("publishBlog", () => {
+    const title = "Hola mundo";
+    const body = "Que agradable dia";
+    const cantidadDePublicaciones = 4;
+    for (let i = 0; i < cantidadDePublicaciones; i++) {
+      publishBlog(title, body);
+    }
+  
+    const blogs = getBlogs(0);
+  
+    expect(blogs.length).toBe(cantidadDePublicaciones, "La cantidad de publicaciones debe ser " + cantidadDePublicaciones.toString());
+  });
+  it("publishBlog titulo", () => {
+    const title = "Hola mundo";
+    const body = "Que agradable dia";
 
-    it("getCounter is the same as reading from storage", () => {
-        expect(storage.getPrimitive<i32>("counter", 0)).toBe(getCounter(), "storage.getPrimitive<i32>(\"counter\", 0) = getCounter()");
-    });
+    publishBlog(title, body);
 
-    it("should decrement by one", () => {
-        incrementCounter(1);
-        decrementCounter(1);
-        expect(getCounter()).toBe(0, "counter should be zero after a single decrement.");
-    });
+    const blogs = getBlogs(0);
 
-    it("should be resetable", () => {
-        incrementCounter(1);
-        incrementCounter(1);
-        resetCounter(); // reset to zero
-        expect(getCounter()).toBe(0, "counter should be zero after it is reset."); 
-    });
-    
-    it("should increment multiple times and decrement back to zero", () => {
-        incrementCounter(1);
-        expect(getCounter()).toBe(1, "0 + 1 = 1");
-        incrementCounter(3);
-        expect(getCounter()).toBe(4, "1 + 3 = 4");
-        decrementCounter(4);
-        expect(getCounter()).toBe(0, "4 - 4 = 0");
-    });
+    expect(blogs[0].title).toBe(title, "El titulo del blog debe coincidir");
+  });
+  it("publishBlog body", () => {
+    const title = "Hola mundo";
+    const body = "Que agradable dia";
 
-    it("should be eve's account", () => {
-        expect(context.contractName).toBe("eve");
-    });
+    publishBlog(title, body);
+
+    const blogs = getBlogs(0);
+
+    expect(blogs[0].body).toBe(body, "El body del blog debe coincidir");
+  });
 });
 
 
