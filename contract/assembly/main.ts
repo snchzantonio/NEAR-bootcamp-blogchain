@@ -1,77 +1,83 @@
 import { context, logging, storage } from "near-sdk-as";
-import {Blog, User, blogs, users} from "./models"
+import { Post, User, posts, users } from "./models"
 
 export function clean(): void {
-  blogs.clear();
+  posts.clear();
   users.clear();
   storage.set<u32>("userIdGenerator", 0);
-  storage.set<u32>("blogsIdGenerator", 0);
+  storage.set<u32>("postsIdGenerator", 0);
 }
 
-export function publishBlog(title: string, body: string): void {
+/**
+ * Agrega un nuevo Post.  
+ * El post creado se vinculara al address que lo publica
+ * @param title titulo del post
+ * @param body  contenido del post
+ */
+export function publishPost(title: string, body: string): void {
   const sender = context.sender;
-  if(users.contains(sender)) { // Si el usuario ya existe
-    var user = users.getSome(sender);
-    const newBlog = new Blog(title, body, user.id);
+  // se podria reemplazar con let user = users.get(sender, new User(sender)); ?
+  let user: User;
 
-    blogs.set(newBlog.id, newBlog);
-    user.blogs.push(newBlog.id);
+  if (users.contains(sender)) {
+    user = users.getSome(sender);
+  } else {
+    logging.log("Creando nuevo usuario: " + sender); // aqui no existen string template
+    user = new User(sender);
+    users.set(sender, user);
+  }
 
-    logging.log("Se anadio un nuevo blog")
-    // logging.log(user.username);
-    // logging.log(user.id);
-    // logging.log(user.blogs.last);
-    // logging.log(newBlog.id);
-    // logging.log(newBlog.authorId);
-    // logging.log(newBlog.title);
-    // logging.log(newBlog.body);
-    return;
-  } // Si el usuario no existe
-  
-  const newUser = new User(sender);
-  const newBlog = new Blog(title, body, newUser.id);
+  const newPost = new Post(title, body, user.id);
+  posts.set(newPost.id, newPost);
+  user.posts.push(newPost.id);
 
-  blogs.set(newBlog.id, newBlog);
-  newUser.blogs.push(newBlog.id);
-  users.set(sender, newUser);
-
-
-  logging.log("Se creo usuario y se anadio un nuevo blog")
-  // logging.log(newUser);
-  // logging.log(newUser.username);
-  // logging.log(newUser.blogs.last);
-  // logging.log(newBlog.id);
-  // logging.log(newBlog.authorId);
-  // logging.log(newBlog.title);
-  // logging.log(newBlog.body);
 }
 
-export function getBlogs(amount: u32, at: u32 = 0): Array<Blog> {
-  var blogsArray = new Array<Blog>();
-  const blogslength = storage.getPrimitive<u32>("blogsIdGenerator", 0); // obtener la cantidad de blogs publicados
 
-  if(amount > blogslength || at > blogslength || (at + amount) > blogslength ) {
+/**
+ * Obtiene una lista de posts.  
+ * Los posts se obtiene desde el final hasta el principio.  
+ * @param amount La cantidad de post que se deben obtener
+ * @param at El indice desde donde se obtendran los posts
+ * @returns 
+ */
+export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = false): Array<Post> {
+  var postsArray = new Array<Post>();
+  const postslength = storage.getPrimitive<u32>("postsIdGenerator", 0); // obtener la cantidad de posts publicados
+
+  if (amount > postslength || at > postslength || (at + amount) > postslength) {
     assert(false, "La cantidad requerida supera a la existente")
     return [];
   }
 
-  if(amount == 0) { // 0 significa todos
-    for(let i:u32 = 0; i <= blogslength; i++) {
-      const blog = blogs.get(i)
-      if(blog) {
-        blogsArray.push(blog);
-      }
-    }
-    
-    return blogsArray.reverse();
+  if (amount == 0) {
+    amount = postslength;
   }
 
-  for(let i:u32 = blogslength - at; i > ((blogslength - at) - amount); i--) { // obtener los ultimos x blogs
-    const blog = blogs.get(i)
-    if(blog) {
-      blogsArray.push(blog);
+  for (let current: u32 = at === 0 ? 1 : at; amount > 0; amount--) {
+    logging.log("Itero por " + current.toString())
+    const post = posts.get(current);
+    current++;
+    if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
+    if (post.hidden && !includeHidden) { //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
+      amount++;
+      continue;
     }
+    postsArray.push(post);
   }
-  
-  return blogsArray;
+
+  return postsArray;
+
+}
+
+export function hidePost(at: u32 = 0): void {
+  let post = posts.get(at);
+  if(post) {
+    post.hidden = true;
+    posts.set(at, post);
+    logging.log(posts.getSome(at))
+    return;
+  }
+  assert(false, at.toString() + " id no existe")
+
 }
