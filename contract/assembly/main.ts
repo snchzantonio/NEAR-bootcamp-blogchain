@@ -17,12 +17,12 @@ export function clean(): void {
 export function publishPost(title: string, body: string): void {
   const sender = context.sender;
   // se podria reemplazar con let user = users.get(sender, new User(sender)); ?
-  let user;
+  let user: User;
 
   if (users.contains(sender)) {
     user = users.getSome(sender);
   } else {
-    logging.log(`Creando nuevo usuario: ${sender}`);
+    logging.log("Creando nuevo usuario: " + sender); // aqui no existen string template
     user = new User(sender);
     users.set(sender, user);
   }
@@ -32,6 +32,7 @@ export function publishPost(title: string, body: string): void {
   user.posts.push(newPost.id);
 
 }
+
 
 /**
  * Obtiene una lista de posts.  
@@ -53,9 +54,11 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
     amount = postslength;
   }
 
-  for (let current: u32 = at; amount > 0; amount--, current++) {
+  for (let current: u32 = at === 0 ? 1 : at; amount > 0; amount--) {
+    logging.log("Itero por " + current.toString())
     const post = posts.get(current);
-    if (post === null) { break; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
+    current++;
+    if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
     if (post.hidden && !includeHidden) { //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
       amount++;
       continue;
@@ -64,10 +67,17 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
   }
 
   return postsArray;
+
 }
 
-export function hidePost(at: u32 = 0) {
-  const post = posts.getSome(at);
-  post.hidden = true;
+export function hidePost(at: u32 = 0): void {
+  let post = posts.get(at);
+  if(post) {
+    post.hidden = true;
+    posts.set(at, post);
+    logging.log(posts.getSome(at))
+    return;
+  }
+  assert(false, at.toString() + " id no existe")
 
 }
