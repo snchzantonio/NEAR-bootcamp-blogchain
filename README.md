@@ -22,7 +22,7 @@ npm install --global yarn
 npm install --global near-cli
 ```
 
-* ### autorizar app para dar acceso a la cuenta de NEAR
+* ### Autorizar app para dar acceso a la cuenta de NEAR
 ```sh
 near login
 ```
@@ -53,12 +53,12 @@ yarn test
 ```
 
 # Correr comandos
-Una vez deployado el contrato, usaremos el Account Id devuelto por la operacion para ejecutar los comandos, que será el account Id del contrato [será utilizado como CONTRACT_ACCOUNT_ID en los ejemplos de comandos]
+Una vez deployado el contrato, usaremos el Account Id devuelto por la operación para ejecutar los comandos, que será el account Id del contrato [será utilizado como CONTRACT_ACCOUNT_ID en los ejemplos de comandos]
 
 Utilizaremos YOUR_ACCOUNT_ID para identificar el account Id que utilizamos para hacer las llamadas a los métodos.
 
 Ademas, es posible que si usas windows, cmd y powershell den errores, por lo que se recomienda usar wsl.
-Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi `\"prueba\": \"hola mundo\"`
+Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi: `\"prueba\": \"hola mundo\"`
 
 ### Como publicar un nuevo blog
 ```sh
@@ -84,8 +84,8 @@ Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi `\"pr
 ```sh
 ```
 
-# Diseño del projecto
-Esta es la posible visualizacion del frontend de nuestro projecto en html, css y js.
+# Diseño del proyecto
+Esta es la posible visualización del frontend de nuestro proyecto en HTML, CSS y JS.
 ```sh
 cd frontend
 npm install
