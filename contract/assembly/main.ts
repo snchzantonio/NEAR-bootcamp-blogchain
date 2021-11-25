@@ -1,5 +1,5 @@
 import { context, logging, storage } from "near-sdk-as";
-import {Post, User, posts, users} from "./models"
+import { Post, User, posts, users } from "./models"
 
 export function clean(): void {
   posts.clear();
@@ -8,70 +8,56 @@ export function clean(): void {
   storage.set<u32>("postsIdGenerator", 0);
 }
 
+/**
+ * Agrega un nuevo Post.  
+ * El post creado se vinculara al address que lo publica
+ * @param title titulo del post
+ * @param body  contenido del post
+ */
 export function publishPost(title: string, body: string): void {
   const sender = context.sender;
-  if(users.contains(sender)) { // Si el usuario ya existe
-    var user = users.getSome(sender);
-    const newPost = new Post(title, body, user.id);
+  // se podria reemplazar con let user = users.get(sender, new User(sender)); ?
+  let user;
 
-    posts.set(newPost.id, newPost);
-    user.posts.push(newPost.id);
+  if (users.contains(sender)) {
+    logging.log(`Creando nuevo usuario: ${sender}`);
+    user = new User(sender);
+    users.set(sender, user);
+  } else {
+    user = users.getSome(sender);
+  }
 
-    logging.log("Se anadio un nuevo blog")
-    // logging.log(user.username);
-    // logging.log(user.id);
-    // logging.log(user.posts.last);
-    // logging.log(newPost.id);
-    // logging.log(newPost.authorId);
-    // logging.log(newPost.title);
-    // logging.log(newPost.body);
-    return;
-  } // Si el usuario no existe
-  
-  const newUser = new User(sender);
-  const newPost = new Post(title, body, newUser.id);
-
+  const newPost = new Post(title, body, user.id);
   posts.set(newPost.id, newPost);
-  newUser.posts.push(newPost.id);
-  users.set(sender, newUser);
+  user.posts.push(newPost.id);
 
-
-  logging.log("Se creo usuario y se anadio un nuevo blog")
-  // logging.log(newUser);
-  // logging.log(newUser.username);
-  // logging.log(newUser.posts.last);
-  // logging.log(newPost.id);
-  // logging.log(newPost.authorId);
-  // logging.log(newPost.title);
-  // logging.log(newPost.body);
 }
 
+/**
+ * Obtiene una lista de posts.  
+ * Los posts se obtiene desde el final hasta el principio.  
+ * @param amount La cantidad de post que se deben obtener
+ * @param at El indice desde donde se obtendran los posts
+ * @returns 
+ */
 export function getPosts(amount: u32, at: u32 = 0): Array<Post> {
   var postsArray = new Array<Post>();
   const postslength = storage.getPrimitive<u32>("postsIdGenerator", 0); // obtener la cantidad de posts publicados
 
-  if(amount > postslength || at > postslength || (at + amount) > postslength ) {
+  if (amount > postslength || at > postslength || (at + amount) > postslength) {
     assert(false, "La cantidad requerida supera a la existente")
     return [];
   }
 
-  if(amount == 0) { // 0 significa todos
-    for(let i:u32 = 0; i <= postslength; i++) {
-      const blog = posts.get(i)
-      if(blog) {
-        postsArray.push(blog);
-      }
-    }
-    
-    return postsArray.reverse();
+  if (amount == 0) {
+    amount = postslength;
   }
 
-  for(let i:u32 = postslength - at; i > ((postslength - at) - amount); i--) { // obtener los ultimos x posts
-    const blog = posts.get(i)
-    if(blog) {
-      postsArray.push(blog);
-    }
+  for (let current: u32 = at; amount > 0; amount--) {
+    const post = posts.get(current);
+    if (post === null) { break; }
+    postsArray.push(post);
   }
-  
+
   return postsArray;
 }

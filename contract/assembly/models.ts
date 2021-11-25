@@ -7,6 +7,7 @@ export class User {
   posts: PersistentVector<u32>; /* Los id de los posts */
 
   constructor(username: string) {
+    //por que los usuarios deben generar su propio id?, esto esta mas alla de la responsabilidad de un usuario
     const userId = storage.getPrimitive<u32>("userIdGenerator", 0) + 1;
     storage.set<u32>("userIdGenerator", userId);
 
@@ -31,6 +32,7 @@ export class Post {
   //disLikes: u32;
 
   constructor(title: string, body: string, authorId: u32/*, date: string*/) {
+    //por que los posts deben generar su propio id?, esto esta mas alla de la responsabilidad de un post
     const postId = storage.getPrimitive<u32>("postsIdGenerator", 0) + 1;
     storage.set<u32>("postsIdGenerator", postId);
 
