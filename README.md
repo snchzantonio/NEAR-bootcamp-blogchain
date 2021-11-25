@@ -104,11 +104,6 @@ Abrir el navegador e ir a [Puerto local](http://localhost:8080/) (si no funciona
 │   │   │   ├── context.json
 │   │   │   └── main.spec.ts
 │   │   └── tsconfig.json
-│   ├── neardev
-│   │   ├── dev-account
-│   │   └── dev-account.env
-│   ├── out
-│   │   └── main.wasm
 │   └── package.json
 ├── frontend
 │   ├── BlogChain
