@@ -57,6 +57,9 @@ Una vez deployado el contrato, usaremos el Account Id devuelto por la operacion 
 
 Utilizaremos YOUR_ACCOUNT_ID para identificar el account Id que utilizamos para hacer las llamadas a los métodos.
 
+Ademas, es posible que si usas windows, cmd y powershell den errores, por lo que se recomienda usar wsl.
+Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi `\"prueba\": \"hola mundo\"`
+
 ### Como publicar un nuevo blog
 ```sh
 ```
