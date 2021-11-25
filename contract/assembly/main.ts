@@ -79,4 +79,5 @@ export function hidePost(at: u32 = 0): void {
     return;
   }
   assert(false, at.toString() + " id no existe")
+
 }
