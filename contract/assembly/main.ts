@@ -94,3 +94,12 @@ export function getPostsByUser(username: string): Array<Post> | null{
   assert(false, "No se encontro usuario");
   return null;
 }
+
+export function getPostById(postId: u32): Post | null {
+  const post = posts.get(postId);
+  if(post) {
+    return post;
+  }
+
+  return null;
+}
