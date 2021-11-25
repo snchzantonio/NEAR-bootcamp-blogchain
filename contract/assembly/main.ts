@@ -18,13 +18,13 @@ export function publishBlog(title: string, body: string): void {
     user.blogs.push(newBlog.id);
 
     logging.log("Se anadio un nuevo blog")
-    logging.log(user.username);
-    logging.log(user.id);
-    logging.log(user.blogs.last);
-    logging.log(newBlog.id);
-    logging.log(newBlog.authorId);
-    logging.log(newBlog.title);
-    logging.log(newBlog.body);
+    // logging.log(user.username);
+    // logging.log(user.id);
+    // logging.log(user.blogs.last);
+    // logging.log(newBlog.id);
+    // logging.log(newBlog.authorId);
+    // logging.log(newBlog.title);
+    // logging.log(newBlog.body);
     return;
   } // Si el usuario no existe
   
@@ -37,30 +37,28 @@ export function publishBlog(title: string, body: string): void {
 
 
   logging.log("Se creo usuario y se anadio un nuevo blog")
-  logging.log(newUser.id);
-  logging.log(newUser.username);
-  logging.log(newUser.blogs.last);
-  logging.log(newBlog.id);
-  logging.log(newBlog.authorId);
-  logging.log(newBlog.title);
-  logging.log(newBlog.body);
+  // logging.log(newUser);
+  // logging.log(newUser.username);
+  // logging.log(newUser.blogs.last);
+  // logging.log(newBlog.id);
+  // logging.log(newBlog.authorId);
+  // logging.log(newBlog.title);
+  // logging.log(newBlog.body);
 }
 
 export function getBlogs(amount: u32): Array<Blog> {
-  // if(amount == 0 || amount < -1) {
-  //   assert(false, "No puedes pedir cero blogs o usar un numero menor que -1");
-  //   return [];
-  // }
-
   var blogsArray = new Array<Blog>();
   const blogslength = storage.getPrimitive<u32>("blogsIdGenerator", 0); // obtener la cantidad de blogs publicados
 
+  if(amount > blogslength) {
+    assert(false, "La cantidad requerida supera a la existente")
+    return [];
+  }
+
   if(amount == 0) { // 0 significa todos
     for(let i:u32 = 0; i <= blogslength; i++) {
-      logging.log(i);
       const blog = blogs.get(i)
       if(blog) {
-        logging.log("Paso " + i.toString());
         blogsArray.push(blog);
       }
     }
@@ -68,16 +66,9 @@ export function getBlogs(amount: u32): Array<Blog> {
     return blogsArray.reverse();
   }
 
-  if(amount > blogslength) {
-    assert(false, "La cantidad requerida supera a la existente")
-    return [];
-  }
-
   for(let i:u32 = blogslength; i > (blogslength - amount); i--) { // obtener los ultimos x blogs
-    logging.log(i);
     const blog = blogs.get(i)
     if(blog) {
-      logging.log("Paso " + i.toString());
       blogsArray.push(blog);
     }
   }

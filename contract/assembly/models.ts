@@ -40,10 +40,5 @@ export class Blog {
   }
 }
 
-/*
-  Podemos hacer un tabla de datos tipo sql, de tener relaciones con los id.
-  Los blogs tienen sus id, los usuarios tienen sus id.
-*/
-
 export let users = new PersistentUnorderedMap<string, User>("users"); // string es la cuenta de NEAR de usuasio
 export let blogs = new PersistentUnorderedMap<u32, Blog>("blogs"); //u32 es el id del blog
