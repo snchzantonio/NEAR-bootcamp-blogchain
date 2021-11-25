@@ -33,6 +33,7 @@ export function publishPost(title: string, body: string): void {
 
 }
 
+
 /**
  * Obtiene una lista de posts.  
  * Los posts se obtiene desde el final hasta el principio.  
@@ -78,4 +79,7 @@ export function hidePost(at: u32 = 0): void {
     return;
   }
   assert(false, at.toString() + " id no existe")
+
+  
+  return blogsArray;
 }
