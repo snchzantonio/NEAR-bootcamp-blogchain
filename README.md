@@ -8,9 +8,9 @@
 
 # Pre-Requisitos
 
-* ## Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado
+* ### Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado
 
-* ## Instalar manejador de paquetes yarn. 
+* ### Instalar manejador de paquetes yarn. 
 Como instalarlo: 
 ```sh
 npm install --global yarn
@@ -18,12 +18,12 @@ npm install --global yarn
 
 * ## Crear una cuenta en la [testnet](https://docs.near.org/docs/develop/basics/create-account#creating-a-testnet-account)
 
-* ## Instalar el cliente de Near. Como instalarlo: 
+* ### Instalar el cliente de Near. Como instalarlo: 
 ```sh
 npm install --global near-cli
 ```
 
-* ## autorizar app para dar acceso a la cuenta de NEAR
+* ### autorizar app para dar acceso a la cuenta de NEAR
 ```sh
 near login
 ```
@@ -38,24 +38,49 @@ git clone https://github.com/snchzantonio/NEAR-bootcamp-blogchain.git
 
 # Pasos
 
-## Instalar paquetes y compilar el contrato
+### Instalar paquetes y compilar el contrato
 ```sh
 cd contract/
 yarn && yarn build
 ```
-## Se desplegara el contrato en la testnet de near
+### Se desplegara el contrato en la testnet de near
 
 ```sh
 yarn deploy:dev
 ```
-## Test unitario
+### Test unitario
 ```sh
 yarn test
 ```
 
 # Correr comandos
+Una vez deployado el contrato, usaremos el Account Id devuelto por la operacion para ejecutar los comandos, que será el account Id del contrato [será utilizado como CONTRACT_ACCOUNT_ID en los ejemplos de comandos]
 
-a
+Utilizaremos YOUR_ACCOUNT_ID para identificar el account Id que utilizamos para hacer las llamadas a los métodos.
+
+### Como publicar un nuevo blog
+```sh
+```
+
+### Como obtener todos los blogs publicados
+```sh
+```
+
+### Como paginar los blogs publicados
+```sh
+```
+
+### Como obtener los blogs publicados de un autor
+```sh
+```
+
+### Como obtener un blogs especifico
+```sh
+```
+
+### Como ocultar un blog
+```sh
+```
 
 # Explora el codigo
 a
