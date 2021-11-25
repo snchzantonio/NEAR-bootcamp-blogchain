@@ -40,7 +40,7 @@ export function publishPost(title: string, body: string): void {
  * @param at El indice desde donde se obtendran los posts
  * @returns 
  */
-export function getPosts(amount: u32, at: u32 = 0): Array<Post> {
+export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = false): Array<Post> {
   var postsArray = new Array<Post>();
   const postslength = storage.getPrimitive<u32>("postsIdGenerator", 0); // obtener la cantidad de posts publicados
 
@@ -53,11 +53,21 @@ export function getPosts(amount: u32, at: u32 = 0): Array<Post> {
     amount = postslength;
   }
 
-  for (let current: u32 = at; amount > 0; amount--) {
+  for (let current: u32 = at; amount > 0; amount--, current++) {
     const post = posts.get(current);
-    if (post === null) { break; }
+    if (post === null) { break; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
+    if (post.hidden && !includeHidden) { //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
+      amount++;
+      continue;
+    }
     postsArray.push(post);
   }
 
   return postsArray;
+}
+
+export function hidePost(at: u32 = 0) {
+  const post = posts.getSome(at);
+  post.hidden = true;
+
 }

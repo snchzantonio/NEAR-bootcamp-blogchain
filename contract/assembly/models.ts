@@ -25,6 +25,7 @@ export class Post {
   title: string;
   body: string; // El cuerpo del articulo debe ser en markdown para el estelizado
   date: string;
+  hidden: boolean;
 
   id: u32;
   authorId: u32; // id del autor
@@ -39,6 +40,7 @@ export class Post {
     this.title = title;
     this.body = body;
     this.date = "12/12/2020";
+    this.hidden = false;
 
     this.authorId = authorId;
     this.id = postId;
@@ -47,10 +49,10 @@ export class Post {
 
 /**
  * string es la cuenta de NEAR de usuasio
-*/ 
-export let users = new PersistentUnorderedMap<string, User>("users"); 
+*/
+export let users = new PersistentUnorderedMap<string, User>("users");
 
 /**
  * u32 es el id del blog
  */
-export let posts = new PersistentUnorderedMap<u32, Post>("posts"); 
+export let posts = new PersistentUnorderedMap<u32, Post>("posts");
