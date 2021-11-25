@@ -20,11 +20,11 @@ export function publishPost(title: string, body: string): void {
   let user;
 
   if (users.contains(sender)) {
+    user = users.getSome(sender);
+  } else {
     logging.log(`Creando nuevo usuario: ${sender}`);
     user = new User(sender);
     users.set(sender, user);
-  } else {
-    user = users.getSome(sender);
   }
 
   const newPost = new Post(title, body, user.id);
