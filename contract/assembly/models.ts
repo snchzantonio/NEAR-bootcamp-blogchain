@@ -1,20 +1,18 @@
-import { context, PersistentUnorderedMap, storage } from "near-sdk-as";
-
-const MAX_USER_POSTS = 10000;
+import { PersistentVector, PersistentSet, PersistentUnorderedMap, storage } from "near-sdk-as";
 
 @nearBindgen
 export class User {
   username: string; // la cuenta de near
-  id: number;
-  blogs: Array<number /* Los id de los blogs */>;
+  id: u32;
+  blogs: PersistentVector<u32>; /* Los id de los blogs */
 
   constructor(username: string) {
-    const userId = storage.getPrimitive<i32>("userIdGenerator", 0) + 1;
-    storage.set<i32>("userIdGenerator", userId);
+    const userId = storage.getPrimitive<u32>("userIdGenerator", 0) + 1;
+    storage.set<u32>("userIdGenerator", userId);
 
-    this.username = context.sender;
+    this.username = username;
     this.id = userId;
-    this.blogs = new Array<number>(MAX_USER_POSTS);
+    this.blogs = new PersistentVector<u32>(this.username + "_blogsIDs");
   }
 }
 
@@ -24,14 +22,14 @@ export class Blog {
   body: string; // El cuerpo del articulo debe ser en markdown para el estelizado
   date: string;
 
-  id: number;
-  authorId: number; // id del autor
-  //likes: number;
-  //disLikes: number;
+  id: u32;
+  authorId: u32; // id del autor
+  //likes: u32;
+  //disLikes: u32;
 
-  constructor(title: string, body: string, authorId: number/*, date: string*/) {
-    const blogId = storage.getPrimitive<i32>("blogsIdGenerator", 0) + 1;
-    storage.set<i32>("blogsIdGenerator", blogId);
+  constructor(title: string, body: string, authorId: u32/*, date: string*/) {
+    const blogId = storage.getPrimitive<u32>("blogsIdGenerator", 0) + 1;
+    storage.set<u32>("blogsIdGenerator", blogId);
 
     this.title = title;
     this.body = body;
@@ -47,5 +45,5 @@ export class Blog {
   Los blogs tienen sus id, los usuarios tienen sus id.
 */
 
-export const users = new PersistentUnorderedMap<string, User>("users");
-export const blogs = new PersistentUnorderedMap<number, Blog>("blogs");
+export let users = new PersistentUnorderedMap<string, User>("users"); // string es la cuenta de NEAR de usuasio
+export let blogs = new PersistentUnorderedMap<u32, Blog>("blogs"); //u32 es el id del blog

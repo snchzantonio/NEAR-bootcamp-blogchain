@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node asconfig.js",
     "deploy:dev": "near dev-deploy",
-    "test": "asp && jest test",
+    "test": "asp && yarn build && jest test",
     "asp": "asp --verbose"
   },
   "devDependencies": {
