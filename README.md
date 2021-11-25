@@ -11,12 +11,11 @@
 * ### Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado
 
 * ### Instalar manejador de paquetes yarn. 
-Como instalarlo: 
 ```sh
 npm install --global yarn
 ```
 
-* ## Crear una cuenta en la [testnet](https://docs.near.org/docs/develop/basics/create-account#creating-a-testnet-account)
+* ### Crear una cuenta en la [testnet](https://docs.near.org/docs/develop/basics/create-account#creating-a-testnet-account)
 
 * ### Instalar el cliente de Near. Como instalarlo: 
 ```sh
@@ -30,7 +29,7 @@ near login
 
 # Como clonar el Repositorio
 
-### Para clonar el repositorio puedes hacer uso del siguiente comando en la terminal:
+Para clonar el repositorio puedes hacer uso del siguiente comando en la terminal:
 
 ```sh
 git clone https://github.com/snchzantonio/NEAR-bootcamp-blogchain.git
@@ -43,7 +42,7 @@ git clone https://github.com/snchzantonio/NEAR-bootcamp-blogchain.git
 cd contract/
 yarn && yarn build
 ```
-### Se desplegara el contrato en la testnet de near
+### Desplegar el contrato en la testnet de near
 
 ```sh
 yarn deploy:dev
@@ -82,16 +81,69 @@ Utilizaremos YOUR_ACCOUNT_ID para identificar el account Id que utilizamos para 
 ```sh
 ```
 
-# Explora el codigo
-a
-
 # Diseño del projecto
-### Esta es la posible visualizacion del frontend de nuestro projecto en html, css y js.
+Esta es la posible visualizacion del frontend de nuestro projecto en html, css y js.
 ```sh
 cd frontend
+npm install
 npm run start
 ```
-### Abrir el navegador e ir a [Puerto local](http://localhost:8080/) (si no funciona revisar en consola el puerto del servidor)
+Abrir el navegador e ir a [Puerto local](http://localhost:8080/) (si no funciona revisar en consola el puerto del servidor)
+
+# Explora el codigo
+```bash
+├── contract
+│   ├── asconfig.js
+│   ├── as-pect.config.js
+│   ├── assembly
+│   │   ├── as_types.d.ts
+│   │   ├── main.ts
+│   │   ├── models.ts
+│   │   ├── __tests__
+│   │   │   ├── as-pect.d.ts
+│   │   │   ├── context.json
+│   │   │   └── main.spec.ts
+│   │   └── tsconfig.json
+│   ├── neardev
+│   │   ├── dev-account
+│   │   └── dev-account.env
+│   ├── out
+│   │   └── main.wasm
+│   └── package.json
+├── frontend
+│   ├── BlogChain
+│   │   ├── about.html
+│   │   ├── assets
+│   │   │   ├── bootstrap
+│   │   │   │   ├── css
+│   │   │   │   │   └── bootstrap.min.css
+│   │   │   │   └── js
+│   │   │   │       └── bootstrap.min.js
+│   │   │   ├── fonts
+│   │   │   │   ├── font-awesome.min.css
+│   │   │   │   ├── FontAwesome.otf
+│   │   │   │   ├── fontawesome-webfont.eot
+│   │   │   │   ├── fontawesome-webfont.svg
+│   │   │   │   ├── fontawesome-webfont.ttf
+│   │   │   │   ├── fontawesome-webfont.woff
+│   │   │   │   └── fontawesome-webfont.woff2
+│   │   │   ├── img
+│   │   │   │   ├── about-bg.jpg
+│   │   │   │   ├── contact-bg.jpg
+│   │   │   │   ├── home-bg.jpg
+│   │   │   │   ├── post-bg.jpg
+│   │   │   │   └── post-sample-image.jpg
+│   │   │   └── js
+│   │   │       └── clean-blog.js
+│   │   ├── contact.html
+│   │   ├── index.html
+│   │   └── post.html
+│   ├── index.js
+│   ├── package.json
+│   └── README.md
+├── LICENSE
+└── README.md
+```
 
 # Licencia
 Copyright 2020 NEAR Inc
