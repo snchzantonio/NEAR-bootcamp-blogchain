@@ -10,14 +10,14 @@
 
 * ### Necesitas tener [Node.js](https://nodejs.org/) v12+ instalado
 
-* ### Instalar manejador de paquetes yarn. 
+* ### Instalar el manejador de paquetes yarn. 
 ```sh
 npm install --global yarn
 ```
 
 * ### Crear una cuenta en la [testnet](https://docs.near.org/docs/develop/basics/create-account#creating-a-testnet-account)
 
-* ### Instalar el cliente de Near. Como instalarlo: 
+* ### Instalar el cliente de Near.
 ```sh
 npm install --global near-cli
 ```

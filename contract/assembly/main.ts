@@ -97,7 +97,7 @@ export function getPostsByUser(username: string): Array<Post>{
 export function getPostById(postId: u32): Post | null {
   const post = posts.get(postId);
   if(post) {
-    return post;
+    return (!post.hidden) ? post : null;
   }
 
   return null;
