@@ -1,5 +1,6 @@
 # NEAR-bootcamp-blogchain
 ![Logo](/frontend/BlogChain/assets/img/logo.jpg "Logo")
+
 Los ganadores escriben la historia, pero los poderosos la censuran. Los intereses personales de un pequeño grupo marcan el camino para los medios de comunicacion y las noticias son manipuladas para beneficiar a unos pocos.
 
 Una manera de evitar la censura es esparciendo las noticias, porque pueden censurar a muchos, pero no se puede censurar a todos.
