@@ -42,7 +42,7 @@ export function publishPost(title: string, body: string): u32 {
 /**
  * Obtiene una lista de posts.  
  * Los posts se obtiene desde el final hasta el principio.  
- * @param amount La cantidad de post que se deben obtener
+ * @param amount La cantidad de post que se deben obtener, se puede usar 0 para conseguir todos los post
  * @param at El indice desde donde se obtendran los posts
  * @param includeHidden true para incluir los post ocultos
  * @returns 
@@ -59,17 +59,17 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
 
   if (amount == 0) {
     amount = postslength;
+    at = postslength - 1;
   }
 
-  for (let current: u32 = at ; amount > 0; amount--) {
+  let current = at;
+  while (amount > 0) {
     const post = posts.get(current);
-    current++;
-    if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
-    if (post.hidden && !includeHidden) { //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
-      amount++;
-      continue;
-    }
+    if (post === null) { break; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array, esto es asi porque amount puede ser mayor que la cantidad de post
+    if (post.hidden && !includeHidden) { continue; } //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
     postsArray.push(post);
+    amount--;
+    current--;
   }
 
   return postsArray;
@@ -106,8 +106,13 @@ export function getPostsByUser(username: string, includeHidden: boolean = false)
   const user = users.get(username);
   let postsArray = new Array<Post>();
   if (user) {
-    for (let i = 0; i < user.posts.length; i++) {
-      const currentPost = posts.getSome(user.posts[i]);
+    logging.log("total de posts del usuario " + user.posts.length.toString());
+    for (let at = user.posts.length - 1; at >= 0; at--) {
+      const userPostId = user.posts[at];
+      logging.log("indice " + at.toString());
+      logging.log("buscar post con el id " + userPostId.toString());
+      const currentPost = posts.get(userPostId);
+      if (!currentPost) { continue; }
       if (currentPost.hidden && !includeHidden) {
         continue;
       }
