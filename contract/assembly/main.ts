@@ -6,6 +6,9 @@ export function clean(): void {
   users.clear();
   storage.set<u32>("userIdGenerator", 0);
   storage.set<u32>("postsIdGenerator", 0);
+  const postId = storage.getPrimitive<u32>("postsIdGenerator", 0);
+
+  logging.log("resertar postid a " + postId.toString());
 }
 
 /**
@@ -14,23 +17,25 @@ export function clean(): void {
  * @param title titulo del post
  * @param body  contenido del post
  */
-export function publishPost(title: string, body: string): void {
+export function publishPost(title: string, body: string): u32 {
   const sender = context.sender;
   // se podria reemplazar con let user = users.get(sender, new User(sender)); ?
   let user: User;
 
   if (users.contains(sender)) {
+    logging.log("El usuario ya existe: " + sender);
     user = users.getSome(sender);
   } else {
-    logging.log("Creando nuevo usuario: " + sender); // aqui no existen string template
+    logging.log("Creando nuevo usuario: " + sender);
     user = new User(sender);
-    users.set(sender, user);
   }
 
   const newPost = new Post(title, body, user.id);
+  logging.log("Se creo el post con id: " + newPost.id.toString());
   posts.set(newPost.id, newPost);
   user.posts.push(newPost.id);
-  users.set(sender, user); // sobre escribir la informacion, es feo pero no se puede
+  users.set(sender, user);
+  return newPost.id;
 }
 
 
@@ -42,11 +47,12 @@ export function publishPost(title: string, body: string): void {
  * @returns 
  */
 export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = false): Array<Post> {
+
+
   var postsArray = new Array<Post>();
   const postslength = storage.getPrimitive<u32>("postsIdGenerator", 0); // obtener la cantidad de posts publicados
 
-  if (amount > postslength || at > postslength || (at + amount) > postslength +1) {
-    assert(false, "La cantidad requerida supera a la existente")
+  if (at > postslength || postslength == 0) {
     return [];
   }
 
@@ -54,7 +60,7 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
     amount = postslength;
   }
 
-  for (let current: u32 = at === 0 ? 1 : at; amount > 0; amount--) {
+  for (let current: u32 = at ; amount > 0; amount--) {
     const post = posts.get(current);
     current++;
     if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
@@ -69,10 +75,10 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
 
 }
 
-export function hidePost(at: u32 = 0): void {
+export function hidePost(at: u32 = 0, hide: boolean = true): void {
   let post = posts.get(at);
-  if(post) {
-    post.hidden = true;
+  if (post) {
+    post.hidden = hide;
     posts.set(at, post);
     return;
   }
@@ -80,12 +86,16 @@ export function hidePost(at: u32 = 0): void {
 
 }
 
-export function getPostsByUser(username: string): Array<Post>{
+export function getPostsByUser(username: string, includeHidden: boolean = false): Array<Post> {
   const user = users.get(username);
   let postsArray = new Array<Post>();
-  if(user) {
+  if (user) {
     for (let i = 0; i < user.posts.length; i++) {
-      postsArray.push(posts.getSome(user.posts[i]));
+      const currentPost = posts.getSome(user.posts[i]);
+      if (currentPost.hidden && !includeHidden) {
+        continue;
+      }
+      postsArray.push(currentPost);
     }
 
     return postsArray;
@@ -94,11 +104,8 @@ export function getPostsByUser(username: string): Array<Post>{
   return [];
 }
 
-export function getPostById(postId: u32): Post | null {
+export function getPostById(postId: u32, includeHidden: boolean = false): Post | null {
   const post = posts.get(postId);
-  if(post) {
-    return (!post.hidden) ? post : null;
-  }
-
+  if (!post || (post.hidden && !includeHidden)) { return null; }
   return null;
 }
