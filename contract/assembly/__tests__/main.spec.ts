@@ -37,6 +37,7 @@ describe("BlogChain ", () => {
     expect(blogs[0].title).toBe(title, "El title debe ser null");
     expect(blogs[0].body).toBe(body, "El body debe ser null");
   });
+  
 });
 
 
