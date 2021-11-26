@@ -44,6 +44,7 @@ export function publishPost(title: string, body: string): u32 {
  * Los posts se obtiene desde el final hasta el principio.  
  * @param amount La cantidad de post que se deben obtener
  * @param at El indice desde donde se obtendran los posts
+ * @param includeHidden true para incluir los post ocultos
  * @returns 
  */
 export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = false): Array<Post> {
@@ -75,6 +76,13 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
 
 }
 
+/**
+ * Oculta o desoculta un post.  
+ * Un post oculto no aparece en los resultados de las funciones que buscan posts a menos que se pase el parametro `includeHidden` a true.
+ * @param at indice del post que se quiere ocultar/desocultar
+ * @param hide true para ocultar, false para desocultar
+ * @returns 
+ */
 export function hidePost(at: u32 = 0, hide: boolean = true): void {
   let post = posts.get(at);
   if (post) {
@@ -86,6 +94,14 @@ export function hidePost(at: u32 = 0, hide: boolean = true): void {
 
 }
 
+
+/**
+ * Obtiene todos los post de un usuario.  
+ * Los posts se obtiene desde el final hasta el principio.  
+ * @param username Direccion del usuario del que se quieren conseguir los posts
+ * @param includeHidden true para incluir los post ocultos
+ * @returns Un array que contiene los posts del usuario, puede estar vacio si el usuario no tiene posts
+ */
 export function getPostsByUser(username: string, includeHidden: boolean = false): Array<Post> {
   const user = users.get(username);
   let postsArray = new Array<Post>();
@@ -104,6 +120,12 @@ export function getPostsByUser(username: string, includeHidden: boolean = false)
   return [];
 }
 
+/**
+ * Obtiene un post.  
+ * @param postId Direccion del usuario del que se quieren conseguir los posts
+ * @param includeHidden true para incluir los post ocultos
+ * @returns El post o `null` en caso de no encontrarlo
+ */
 export function getPostById(postId: u32, includeHidden: boolean = false): Post | null {
   const post = posts.get(postId);
   if (!post || (post.hidden && !includeHidden)) { return null; }
