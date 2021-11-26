@@ -1,9 +1,12 @@
 # NEAR-bootcamp-blogchain
+![Logo](/frontend/BlogChain/assets/img/logo.jpg "Logo")
+Los ganadores escriben la historia, pero los poderosos la censuran. Los intereses personales de un pequeño grupo marcan el camino para los medios de comunicacion y las noticias son manipuladas para beneficiar a unos pocos.
 
-# Introducción
+Una manera de evitar la censura es esparciendo las noticias, porque pueden censurar a muchos, pero no se puede censurar a todos.
 
+Blogchain es una plataforma de noticias decentralizada donde nadie restringe tu libertad de opinion, aqui periodistas, pensadores, poetas, ilustradores, humorista o cualquiera pueden expresarse con libertad.
 
-
+Blogchain es tu opinion decentralizada y sin intermediarios.
 
 
 # Pre-Requisitos
@@ -62,26 +65,27 @@ Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi: `\"p
 
 ### Como publicar un nuevo blog
 ```sh
+near call ${CONTRACT_ACCOUNT_ID} publishPost '{"title": "Hola", "body": "Mundo"}' --account-id ${YOUR_ACCOUNT_ID}
 ```
 
 ### Como obtener todos los blogs publicados
 ```sh
+near view ${CONTRACT_ACCOUNT_ID} getPosts '{"amount": 0, "at": 0, "includeHidden": false}'
 ```
 
 ### Como paginar los blogs publicados
 ```sh
+near view ${CONTRACT_ACCOUNT_ID} getPosts '{"amount": 5, "at": 10, "includeHidden": false}'
 ```
 
 ### Como obtener los blogs publicados de un autor
 ```sh
+near view ${CONTRACT_ACCOUNT_ID} getPostsByUser '{"username": "juanita.testnet"}'
 ```
 
 ### Como obtener un blogs especifico
 ```sh
-```
-
-### Como ocultar un blog
-```sh
+near view ${CONTRACT_ACCOUNT_ID} getPostById '{"postId": 2}'
 ```
 
 # Diseño del proyecto
@@ -129,11 +133,12 @@ Abrir el navegador e ir a [Puerto local](http://localhost:8080/) (si no funciona
 │   │   │   │   ├── about-bg.jpg
 │   │   │   │   ├── contact-bg.jpg
 │   │   │   │   ├── home-bg.jpg
+│   │   │   │   ├── logo.jpg
+│   │   │   │   ├── logo.svg
 │   │   │   │   ├── post-bg.jpg
 │   │   │   │   └── post-sample-image.jpg
 │   │   │   └── js
 │   │   │       └── clean-blog.js
-│   │   ├── contact.html
 │   │   ├── index.html
 │   │   └── post.html
 │   ├── index.js
