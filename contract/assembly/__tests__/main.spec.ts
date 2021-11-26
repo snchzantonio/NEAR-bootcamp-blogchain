@@ -2,10 +2,15 @@ import {
   publishPost,
   getPosts,
   getPostById,
-  getPostsByUser
+  getPostsByUser,
+  clean
 } from '../main';
 
 import { context, logging, storage, VM } from 'near-sdk-as';
+
+beforeAll(() => {
+  clean();
+});
 
 describe("BlogChain ", () => {
   it("publishPost body", () => {
@@ -24,7 +29,7 @@ describe("BlogChain ", () => {
 
     publishPost(title, body);
 
-    const blog1 = getPostById(0); // los id comienzan por 1, por lo que 0 no existe!
+    const blog1 = getPostById(0);
     expect(blog1).toBeNull("El post debe ser null");
   });
   it("getPostsByUser", () => {
@@ -33,11 +38,10 @@ describe("BlogChain ", () => {
 
     publishPost(title, body);
 
-    const blogs = getPostsByUser(context.sender); // los id comienzan por 1, por lo que 0 no existe!
+    const blogs = getPostsByUser(context.sender);
     expect(blogs[0].title).toBe(title, "El title debe ser null");
     expect(blogs[0].body).toBe(body, "El body debe ser null");
   });
-  
 });
 
 
