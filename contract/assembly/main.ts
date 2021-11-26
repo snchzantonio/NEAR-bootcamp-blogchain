@@ -42,8 +42,9 @@ export function publishPost(title: string, body: string): u32 {
 /**
  * Obtiene una lista de posts.  
  * Los posts se obtiene desde el final hasta el principio.  
- * @param amount La cantidad de post que se deben obtener
+ * @param amount La cantidad de post que se deben obtener, se puede usar 0 para conseguir todos los post
  * @param at El indice desde donde se obtendran los posts
+ * @param includeHidden true para incluir los post ocultos
  * @returns 
  */
 export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = false): Array<Post> {
@@ -58,23 +59,30 @@ export function getPosts(amount: u32, at: u32 = 0, includeHidden: boolean = fals
 
   if (amount == 0) {
     amount = postslength;
+    at = postslength - 1;
   }
 
-  for (let current: u32 = at ; amount > 0; amount--) {
+  let current = at;
+  while (amount > 0) {
     const post = posts.get(current);
-    current++;
-    if (post === null) { continue; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array
-    if (post.hidden && !includeHidden) { //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
-      amount++;
-      continue;
-    }
+    if (post === null) { break; } //los indices nunca se eliminan, si nos encontramos un null hemos sobrepasado el array, esto es asi porque amount puede ser mayor que la cantidad de post
+    if (post.hidden && !includeHidden) { continue; } //solo incluir los ocultos si se solicita, de lo contrario no contamos el post y continuamos
     postsArray.push(post);
+    amount--;
+    current--;
   }
 
   return postsArray;
 
 }
 
+/**
+ * Oculta o desoculta un post.  
+ * Un post oculto no aparece en los resultados de las funciones que buscan posts a menos que se pase el parametro `includeHidden` a true.
+ * @param at indice del post que se quiere ocultar/desocultar
+ * @param hide true para ocultar, false para desocultar
+ * @returns 
+ */
 export function hidePost(at: u32 = 0, hide: boolean = true): void {
   let post = posts.get(at);
   if (post) {
@@ -86,12 +94,25 @@ export function hidePost(at: u32 = 0, hide: boolean = true): void {
 
 }
 
+
+/**
+ * Obtiene todos los post de un usuario.  
+ * Los posts se obtiene desde el final hasta el principio.  
+ * @param username Direccion del usuario del que se quieren conseguir los posts
+ * @param includeHidden true para incluir los post ocultos
+ * @returns Un array que contiene los posts del usuario, puede estar vacio si el usuario no tiene posts
+ */
 export function getPostsByUser(username: string, includeHidden: boolean = false): Array<Post> {
   const user = users.get(username);
   let postsArray = new Array<Post>();
   if (user) {
-    for (let i = 0; i < user.posts.length; i++) {
-      const currentPost = posts.getSome(user.posts[i]);
+    logging.log("total de posts del usuario " + user.posts.length.toString());
+    for (let at = user.posts.length - 1; at >= 0; at--) {
+      const userPostId = user.posts[at];
+      logging.log("indice " + at.toString());
+      logging.log("buscar post con el id " + userPostId.toString());
+      const currentPost = posts.get(userPostId);
+      if (!currentPost) { continue; }
       if (currentPost.hidden && !includeHidden) {
         continue;
       }
@@ -104,6 +125,12 @@ export function getPostsByUser(username: string, includeHidden: boolean = false)
   return [];
 }
 
+/**
+ * Obtiene un post.  
+ * @param postId Direccion del usuario del que se quieren conseguir los posts
+ * @param includeHidden true para incluir los post ocultos
+ * @returns El post o `null` en caso de no encontrarlo
+ */
 export function getPostById(postId: u32, includeHidden: boolean = false): Post | null {
   const post = posts.get(postId);
   if (!post || (post.hidden && !includeHidden)) { return null; }

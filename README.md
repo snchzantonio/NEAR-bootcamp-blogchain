@@ -1,5 +1,20 @@
 # NEAR-bootcamp-blogchain
+
+Este es el proyecto para el NCD L1, un bootcamp sobre el blockchain NEAR.  
+
+Integrantes:  
+⚜ [EliezerLopezS](https://github.com/EliezerLopezS)  
+⚜ [Gabo9678](https://github.com/Gabo9678)  
+⚜ [nikoturin](https://github.com/nikoturin)  
+⚜ [snchzantonio](https://github.com/snchzantonio)  
+⚜ [Stolkerve](https://github.com/Stolkerve)  
+
+
+<center>
+
 ![Logo](/frontend/BlogChain/assets/img/logo.jpg "Logo")
+
+</center>
 
 Los ganadores escriben la historia, pero los poderosos la censuran. Los intereses personales de un pequeño grupo marcan el camino para los medios de comunicacion y las noticias son manipuladas para beneficiar a unos pocos.
 
@@ -21,6 +36,10 @@ npm install --global yarn
 
 * ### Crear una cuenta en la [testnet](https://docs.near.org/docs/develop/basics/create-account#creating-a-testnet-account)
 
+```sh
+https://docs.near.org/docs/develop/basics/create-account
+```
+
 * ### Instalar el cliente de Near.
 ```sh
 npm install --global near-cli
@@ -39,7 +58,9 @@ Para clonar el repositorio puedes hacer uso del siguiente comando en la terminal
 git clone https://github.com/snchzantonio/NEAR-bootcamp-blogchain.git
 ```
 
-# Pasos
+---
+
+# Pasos para ejecutar el proyecto
 
 ### Instalar paquetes y compilar el contrato
 ```sh
@@ -57,9 +78,9 @@ yarn test
 ```
 
 # Correr comandos
-Una vez deployado el contrato, usaremos el Account Id devuelto por la operación para ejecutar los comandos, que será el account Id del contrato [será utilizado como CONTRACT_ACCOUNT_ID en los ejemplos de comandos]
+Una vez deployado el contrato, usaremos el Account Id devuelto por la operación para ejecutar los comandos, que será el account Id del contrato [será utilizado como `CONTRACT_ACCOUNT_ID` en los ejemplos de comandos]
 
-Utilizaremos YOUR_ACCOUNT_ID para identificar el account Id que utilizamos para hacer las llamadas a los métodos.
+Utilizaremos `YOUR_ACCOUNT_ID` para identificar el account Id que utilizamos para hacer las llamadas a los métodos.
 
 Ademas, es posible que si usas windows, cmd y powershell den errores, por lo que se recomienda usar wsl.
 Y si se usara windows, las comillas dobles dentro de los JSON debe ser asi: `\"prueba\": \"hola mundo\"`
@@ -81,12 +102,12 @@ near view ${CONTRACT_ACCOUNT_ID} getPosts '{"amount": 5, "at": 10, "includeHidde
 
 ### Como obtener los blogs publicados de un autor
 ```sh
-near view ${CONTRACT_ACCOUNT_ID} getPostsByUser '{"username": "juanita.testnet"}'
+near view ${CONTRACT_ACCOUNT_ID} getPostsByUser '{"username": "juanita.testnet", "includeHidden": false}'
 ```
 
 ### Como obtener un blogs especifico
 ```sh
-near view ${CONTRACT_ACCOUNT_ID} getPostById '{"postId": 2}'
+near view ${CONTRACT_ACCOUNT_ID} getPostById '{"postId": 2, "includeHidden": false}'
 ```
 
 # Diseño del proyecto
