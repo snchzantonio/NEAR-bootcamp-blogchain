@@ -1,4 +1,4 @@
-import { PersistentVector, PersistentSet, PersistentUnorderedMap, storage } from "near-sdk-as";
+import { PersistentVector, PersistentUnorderedMap, storage, logging } from "near-sdk-as";
 
 @nearBindgen
 export class User {
@@ -8,12 +8,12 @@ export class User {
 
   constructor(username: string) {
     //por que los usuarios deben generar su propio id?, esto esta mas alla de la responsabilidad de un usuario
-    const userId = storage.getPrimitive<u32>("userIdGenerator", -1) + 1;
-    storage.set<u32>("userIdGenerator", userId);
-
+    const userId = storage.getPrimitive<u32>("userIdGenerator", 0) ;
+    
     this.username = username;
     this.id = userId;
     this.posts = new PersistentVector<u32>(this.username + "_postsIDs");
+    storage.set<u32>("userIdGenerator", userId + 1);
   }
 }
 
@@ -34,16 +34,18 @@ export class Post {
 
   constructor(title: string, body: string, authorId: u32/*, date: string*/) {
     //por que los posts deben generar su propio id?, esto esta mas alla de la responsabilidad de un post
-    const postId = storage.getPrimitive<u32>("postsIdGenerator", -1) + 1;
-    storage.set<u32>("postsIdGenerator", postId);
-
+    const postId = storage.getPrimitive<u32>("postsIdGenerator", 0);
+    logging.log("postId es " + postId.toString());
     this.title = title;
     this.body = body;
     this.date = "12/12/2020";
+    
     this.hidden = false;
-
     this.authorId = authorId;
     this.id = postId;
+    
+    storage.set<u32>("postsIdGenerator", postId + 1);
+    logging.log("postId es " + (postId + 1).toString());
   }
 }
 
